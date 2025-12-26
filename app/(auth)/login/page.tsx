@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const router = useRouter();
+
+  const { data: session, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (session) {
+      router.replace("/dashboard");
+    }
+  }, [session, router]);
 
   const [form, setForm] = useState({
     email: "",
@@ -24,7 +32,7 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const { data, error } = await authClient.signIn.email(
+    const { error } = await authClient.signIn.email(
       {
         email: form.email,
         password: form.password,
@@ -37,24 +45,39 @@ export default function LoginPage() {
         onError: (ctx) => {
           setError(ctx.error.message);
           setLoading(false);
-          console.error(error)
+          console.error(error);
         },
       }
     );
-    console.log(data)
   };
+
+  const handleGoogleLogin = async() => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/dashboard"
+    })
+  }
+
+  if (isPending) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Checking session...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-zinc-900 to-black">
       <div className="w-full max-w-md bg-zinc-900 text-white rounded-2xl shadow-xl p-8">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          Welcome Back 👋
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-2">Welcome Back 👋</h1>
 
-        <p className="text-center text-zinc-400 mb-6">
-          Login to continue
-        </p>
-
+        <p className="text-center text-zinc-400 mb-6">Login to continue</p>
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full py-3 mb-4 bg-white text-black rounded-lg font-semibold hover:bg-gray-200"
+        >
+          Continue with Google
+        </button>
         {error && (
           <div className="bg-red-500/10 text-red-400 text-sm p-3 rounded mb-4">
             {error}
