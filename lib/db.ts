@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
 type ConnectionObject = {
   isConnected?: number
 }
 const connection: ConnectionObject = {isConnected: 0}
+const client = new MongoClient(process.env.MONGO_URI!);
+
 
 async function connectDB(): Promise<void>{
   if(connection.isConnected){
@@ -22,3 +25,4 @@ async function connectDB(): Promise<void>{
 }
 
 export default connectDB
+export const db = client.db("test"); 

@@ -52,7 +52,7 @@ export const auth = betterAuth({
   
   events: {
     async userCreated({ user }: { user: typeof auth.$Infer.Session.user }) {
-      await db.collection("users").updateOne(
+      await db.collection("user").updateOne(
         { id: user.id },
         {
           $set: {
