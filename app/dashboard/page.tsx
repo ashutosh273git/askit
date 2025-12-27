@@ -12,6 +12,9 @@ export default async function DashboardPage() {
   if (!session) {
     redirect("/login");
   }
+  if(session.user.role === "admin"){
+    redirect("/admin")
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
