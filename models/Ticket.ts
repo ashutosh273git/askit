@@ -4,9 +4,11 @@ const ticketSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
+    summary: { type: String, default: "" },
+    aiAnswer: { type: String, default: "" },
     status: {
       type: String,
-      enum: ["TODO", "ASSIGNED", "IN_PROGRESS", "DONE"],
+      enum: ["TODO", "IN_PROGRESS", "DONE"],
       default: "TODO",
     },
     createdBy: { type: String, required: true },
@@ -16,11 +18,9 @@ const ticketSchema = new mongoose.Schema(
       enum: ["low", "medium", "high"],
       default: "medium",
     },
-    headline: { type: String },
     relatedSkills: { type: [String], default: [] },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Ticket ||
-  mongoose.model("Ticket", ticketSchema);
+export default mongoose.models.Ticket || mongoose.model("Ticket", ticketSchema);

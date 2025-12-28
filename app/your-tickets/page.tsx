@@ -1,6 +1,7 @@
 "use client";
 
 import GoBackButton from "@/components/back-button";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Ticket = {
@@ -13,6 +14,8 @@ type Ticket = {
 };
 
 export default function GetAllTickets() {
+  const router = useRouter();
+
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +41,9 @@ export default function GetAllTickets() {
           {tickets.map((ticket) => (
             <div
               key={ticket._id}
+              onClick={() => {
+                router.push(`/ticket/${ticket._id}`)
+              }}
               className="bg-zinc-900 border border-zinc-700 rounded-lg p-6 hover:border-blue-500 transition"
             >
               <div className="flex justify-between items-start">

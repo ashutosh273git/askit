@@ -9,7 +9,6 @@ export default function CreateTicket() {
   const [form, setForm] = useState({
     title: "",
     description: "",
-    priority: "medium",
   });
 
   const [loading, setLoading] = useState(false);
@@ -18,7 +17,7 @@ export default function CreateTicket() {
     e.preventDefault();
     setLoading(true);
 
-    const res = await fetch("api/ticket/create-ticket", {
+    const res = await fetch("/api/ticket/create-ticket", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -66,19 +65,6 @@ export default function CreateTicket() {
             />
           </div>
 
-          {/* Priority */}
-          <div>
-            <label className="text-sm text-gray-400">Priority</label>
-            <select
-              className="w-full mt-1 p-2 bg-zinc-800 border border-zinc-600 rounded"
-              value={form.priority}
-              onChange={(e) => setForm({ ...form, priority: e.target.value })}
-            >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
           {/* Submit */}
           <button
             type="submit"
