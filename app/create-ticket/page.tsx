@@ -1,4 +1,5 @@
-"use client"
+"use client";
+import GoBackButton from "@/components/back-button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -34,6 +35,7 @@ export default function CreateTicket() {
     <div className="min-h-screen bg-black text-white p-8">
       <div className="max-w-2xl mx-auto bg-zinc-900 border border-zinc-700 rounded-lg p-6">
         <h1 className="text-2xl font-bold mb-6">Create Ticket</h1>
+        <GoBackButton />
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Title */}

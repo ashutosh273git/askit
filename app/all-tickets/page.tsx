@@ -1,5 +1,6 @@
 "use client";
 
+import GoBackButton from "@/components/back-button";
 import { useEffect, useState } from "react";
 
 type Ticket = {
@@ -27,6 +28,7 @@ export default function GetAllTickets() {
   return (
     <div className="min-h-screen bg-black text-white p-8">
       <h1 className="text-3xl font-bold mb-6">All Tickets</h1>
+      <GoBackButton />
 
       {loading ? (
         <p className="text-gray-400">Loading tickets...</p>

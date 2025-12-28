@@ -1,5 +1,6 @@
 "use client";
 
+import GoBackButton from "@/components/back-button";
 import { useEffect, useState } from "react";
 
 type Ticket = {
@@ -27,7 +28,7 @@ export default function GetAllTickets() {
   return (
     <div className="min-h-screen bg-black text-white p-8">
       <h1 className="text-3xl font-bold mb-6">Your Tickets</h1>
-
+      <GoBackButton />
       {loading ? (
         <p className="text-gray-400">Loading tickets...</p>
       ) : tickets.length === 0 ? (
@@ -41,9 +42,7 @@ export default function GetAllTickets() {
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className="text-lg font-semibold">
-                    {ticket.title}
-                  </h2>
+                  <h2 className="text-lg font-semibold">{ticket.title}</h2>
 
                   <p className="text-sm text-gray-400 mt-1">
                     {ticket.description}
@@ -61,8 +60,7 @@ export default function GetAllTickets() {
               </div>
 
               <p className="text-xs text-gray-500 mt-3">
-                Created:{" "}
-                {new Date(ticket.createdAt).toLocaleDateString()}
+                Created: {new Date(ticket.createdAt).toLocaleDateString()}
               </p>
             </div>
           ))}

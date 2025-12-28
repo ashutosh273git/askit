@@ -9,18 +9,15 @@ export async function GET() {
       headers: await headers(),
     });
 
-    if(!session){
-        return NextResponse.json(
-            {error: "Unauthorized"},
-            {status: 401}
-        )
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const tickets = await Ticket.find({
-        createdBy: session.user.id
-    }).sort({createdAt: -1})
+      createdBy: session.user.id,
+    }).sort({ createdAt: -1 });
 
-    return NextResponse.json(tickets, {status: 200})
+    return NextResponse.json(tickets, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch tickets" },
