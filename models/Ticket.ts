@@ -16,9 +16,6 @@ const ticketSchema = new mongoose.Schema(
       enum: ["low", "medium", "high"],
       default: "medium",
     },
-    deadline: {
-      type: Date,
-    },
     headline: { type: String },
     relatedSkills: { type: [String], default: [] },
   },

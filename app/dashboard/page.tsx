@@ -4,10 +4,11 @@ import LogoutButton from "../../components/logout-button";
 import { headers } from "next/headers";
 
 export default async function DashboardPage() {
-  const reqHeaders = await headers(); // ✅ MUST await
+
+  // const reqHeaders = await headers();
 
   const session = await auth.api.getSession({
-    headers: reqHeaders, // ✅ now correct type
+    headers: await headers(),
   });
   if (!session) {
     redirect("/login");
@@ -23,6 +24,8 @@ export default async function DashboardPage() {
       <p className="text-zinc-400 mb-6">{session.user.email}</p>
 
       <LogoutButton />
+
+
     </div>
   );
 }

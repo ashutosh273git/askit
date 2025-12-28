@@ -1,7 +1,7 @@
 "use client";
 
 import LogoutButton from "@/components/logout-button";
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type User = {
   _id: string;
