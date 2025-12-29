@@ -1,9 +1,10 @@
 import GoBackButton from "@/components/back-button";
 import { auth } from "@/lib/auth";
-import connectDB from "@/lib/db";
+import connectDB, { db } from "@/lib/db";
 import Ticket from "@/models/Ticket";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { ObjectId } from "mongodb";
 
 export default async function TicketPage({
   params,
@@ -18,10 +19,14 @@ export default async function TicketPage({
 
   if (!session) return notFound();
 
-  const {id} = await params
+  const { id } = await params;
   const ticket = await Ticket.findById(id);
 
   if (!ticket) return notFound();
+
+  const assignedUser = await db.collection("user").findOne({
+    _id: new ObjectId(ticket.assignedTo),
+  });
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -29,14 +34,11 @@ export default async function TicketPage({
 
       <div className="max-w-3xl mx-auto">
         {/* Title */}
-        <h1 className="text-3xl font-bold mb-2">
-          {ticket.title}
-        </h1>
+        <h1 className="text-3xl font-bold mb-2">{ticket.title}</h1>
 
         {/* Meta */}
         <p className="text-sm text-zinc-400 mb-6">
-          Created on{" "}
-          {new Date(ticket.createdAt).toLocaleDateString()}
+          Created on {new Date(ticket.createdAt).toLocaleDateString()}
         </p>
 
         {/* Status & Priority */}
@@ -52,23 +54,15 @@ export default async function TicketPage({
 
         {/* Description */}
         <div className="bg-zinc-900 border border-zinc-700 rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-2">
-            Description
-          </h2>
-          <p className="text-zinc-300">
-            {ticket.description}
-          </p>
+          <h2 className="text-lg font-semibold mb-2">Description</h2>
+          <p className="text-zinc-300">{ticket.description}</p>
         </div>
 
         {/* AI Summary */}
         {ticket.summary && (
           <div className="bg-zinc-900 border border-zinc-700 rounded-lg p-6 mb-6">
-            <h2 className="text-lg font-semibold mb-2">
-              🤖 AI Summary
-            </h2>
-            <p className="text-zinc-300">
-              {ticket.summary}
-            </p>
+            <h2 className="text-lg font-semibold mb-2">🤖 AI Summary</h2>
+            <p className="text-zinc-300">{ticket.summary}</p>
           </div>
         )}
 
@@ -78,18 +72,14 @@ export default async function TicketPage({
             <h2 className="text-lg font-semibold mb-2">
               💡 AI Suggested Solution
             </h2>
-            <p className="text-zinc-300">
-              {ticket.aiAnswer}
-            </p>
+            <p className="text-zinc-300">{ticket.aiAnswer}</p>
           </div>
         )}
 
         {/* Skills */}
         {ticket.relatedSkills?.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-2">
-              Related Skills
-            </h2>
+            <h2 className="text-lg font-semibold mb-2">Related Skills</h2>
             <div className="flex flex-wrap gap-2">
               {ticket.relatedSkills.map((skill: string) => (
                 <span
@@ -105,8 +95,14 @@ export default async function TicketPage({
 
         {/* Assigned To */}
         <div className="text-sm text-zinc-400">
-          Assigned To:{" "}
-          {ticket.assignedTo || "Not assigned yet"}
+          Assigned to: {assignedUser ? assignedUser.name : "Not assigned yet"}
+          if AI solution is not satisfactory please wait for our moderator to
+          reply
+          <br />
+          <span className="italic text-zinc-500">
+            If AI solution is not satisfactory, please wait for a moderator to
+            reply.
+          </span>
         </div>
       </div>
     </div>

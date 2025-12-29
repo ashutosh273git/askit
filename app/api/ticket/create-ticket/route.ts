@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/db";
+import { inngest } from "@/lib/inngest";
 import Ticket from "@/models/Ticket";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -36,6 +37,15 @@ export async function POST(req: Request) {
       summary: "",
       aiAnswer: "",
       relatedSkills: [],
+    });
+
+    await ticket.save()
+
+    await inngest.send({
+      name: "ticket/created",
+      data: {
+        ticketId: ticket._id.toString(),
+      },
     });
 
     return NextResponse.json(ticket, { status: 201 });
