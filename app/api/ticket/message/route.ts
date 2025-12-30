@@ -56,8 +56,6 @@ export async function POST(req: Request) {
 
     const { ticketId, message } = await req.json();
 
-    console.log("❤️❤️❤️❤️", ticketId, message )
-
     if (!ticketId || !message) {
       return NextResponse.json(
         { error: "ticketId and message are required" },
