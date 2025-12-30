@@ -4,7 +4,7 @@ import Ticket from "@/models/Ticket";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   await connectDB();
   try {
     const session = await auth.api.getSession({
@@ -15,9 +15,14 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const tickets = await Ticket.find({
-      createdBy: session.user.id,
-    }).sort({ createdAt: -1 });
+    const {searchParams} = new URL(req.url)
+    const role = searchParams.get("role")
+
+    const filter = role === "moderator"
+    ? {assignedTo: session.user.id}
+    : {createdBy: session.user.id}
+
+    const tickets = await Ticket.find(filter).sort({ createdAt: -1 });
 
     return NextResponse.json(tickets, { status: 200 });
   } catch (error) {

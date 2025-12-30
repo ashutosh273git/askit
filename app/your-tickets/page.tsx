@@ -1,6 +1,7 @@
 "use client";
 
 import GoBackButton from "@/components/back-button";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -15,18 +16,21 @@ type Ticket = {
 
 export default function GetAllTickets() {
   const router = useRouter();
+  const {data: session}  =authClient.useSession()
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/ticket/get-your-tickets")
+    if (!session) return;
+    const role = session.user.role === "moderator" ? "moderator" : "user"
+    fetch(`/api/ticket/get-your-tickets?role=${role}`)
       .then((res) => res.json())
       .then((data) => {
         setTickets(data);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [session]);
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
