@@ -50,6 +50,10 @@ export default async function DashboardPage() {
     redirect("/admin");
   }
 
+  if (session.user.role === "moderator") {
+    redirect("/moderator-dashboard");
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-6">
       <h1 className="text-3xl font-bold mb-2">

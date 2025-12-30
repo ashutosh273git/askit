@@ -96,8 +96,6 @@ export default async function TicketPage({
         {/* Assigned To */}
         <div className="text-sm text-zinc-400">
           Assigned to: {assignedUser ? assignedUser.name : "Not assigned yet"}
-          if AI solution is not satisfactory please wait for our moderator to
-          reply
           <br />
           <span className="italic text-zinc-500">
             If AI solution is not satisfactory, please wait for a moderator to

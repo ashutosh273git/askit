@@ -10,8 +10,13 @@ export default function LoginPage() {
   const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
-    if (session) {
-      router.replace("/dashboard");
+    if(!session) return
+    if (session.user.role === "admin") {
+      router.replace("/admin");
+    } else if(session.user.role === "moderator"){
+      router.replace("/moderator-dashboard")
+    } else {
+      router.replace("/dashboard")
     }
   }, [session, router]);
 
@@ -36,12 +41,8 @@ export default function LoginPage() {
       {
         email: form.email,
         password: form.password,
-        callbackURL: "/dashboard",
       },
       {
-        onSuccess: () => {
-          router.push("/dashboard");
-        },
         onError: (ctx) => {
           setError(ctx.error.message);
           setLoading(false);
