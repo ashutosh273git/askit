@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     console.log("➡️ Update user API hit");
 
     const session = await auth.api.getSession({
-      headers: await headers(),
+      headers: req.headers,
     });
 
     console.log("🧠 Session:", session);
