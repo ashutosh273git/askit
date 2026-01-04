@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { auth } from "@/lib/auth";
 import { MongoClient, ObjectId } from "mongodb";
 import { NextResponse } from "next/server";

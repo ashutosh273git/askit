@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/db";
 import { inngest } from "@/lib/inngest";
