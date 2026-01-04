@@ -53,12 +53,14 @@ export const onTicketCreated = inngest.createFunction(
 
         const skills = relatedskills.map((s: string) => s.toLowerCase());
 
+        // console.log("❤️❤️❤️❤️❤️❤️❤️❤️", skills)
         let user = await db.collection("user").findOne({
           role: "moderator",
           skills: {
             $in: skills
           },
         });
+        // console.log("❤️❤️❤️❤️❤️❤️❤️❤️ assigned to", user)
         if (!user) {
           user = await db.collection("user").findOne({
             role: "admin",
