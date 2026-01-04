@@ -65,7 +65,7 @@ export default async function TicketPage({
             <h2 className="text-lg font-semibold mb-2">
               🤖 AI Suggested Solution
             </h2>
-            <p className="text-zinc-300">{ticket.aiAnswer}</p>
+            <pre className="whitespace-pre-wrap bg-zinc-950 text-zinc-200 p-4 rounded-md text-sm overflow-x-auto">{ticket.aiAnswer}</pre>
           </div>
         )}
 

@@ -35,15 +35,25 @@ Your job is to:
 
 IMPORTANT:
 - Respond with ONLY valid raw JSON.
-- Do NOT include markdown, code fences, or extra text.
-- Output must be a pure JSON object.
-
+- Do NOT include markdown or code fences.
+- Preserve indentation in code using spaces.
+- Use \\n for new lines in code examples.
+- Code examples MUST be readable when printed with whitespace preserved.
 The JSON format MUST be:
 
 {
   "summary": "Short summary of the issue",
   "priority": "low | medium | high",
-  "helpfulNotes": "Detailed technical explanation and tips",
+  "helpfulNotes": {
+    "overview": "High-level explanation of the problem",
+    "steps": [
+      "Step 1 explanation",
+      "Step 2 explanation",
+      "Step 3 explanation"
+    ],
+    "codeExample": "Indented code using spaces and \\n",
+    "nextSteps": "Optional follow-up guidance"
+  },
   "relatedSkills": ["React", "Node.js"]
 }
 `,

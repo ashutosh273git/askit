@@ -39,7 +39,25 @@ export const onTicketCreated = inngest.createFunction(
               ? "medium"
               : aiResponse.priority,
             summary: aiResponse.summary,
-            aiAnswer: aiResponse.helpfulNotes,
+aiAnswer: `
+Overview:
+${aiResponse.helpfulNotes?.overview ?? "Not provided"}
+
+Steps:
+${
+  aiResponse.helpfulNotes?.steps?.length
+    ? aiResponse.helpfulNotes.steps
+        .map((s: string, i: number) => `${i + 1}. ${s}`)
+        .join("\n")
+    : "No steps provided"
+}
+
+Code Example:
+${aiResponse.helpfulNotes?.codeExample ?? "No code example provided"}
+
+Next Steps:
+${aiResponse.helpfulNotes?.nextSteps ?? "No further guidance"}
+`,
             status: "IN_PROGRESS",
             relatedSkills: aiResponse.relatedSkills,
           });
@@ -57,7 +75,7 @@ export const onTicketCreated = inngest.createFunction(
         let user = await db.collection("user").findOne({
           role: "moderator",
           skills: {
-            $in: skills
+            $in: skills,
           },
         });
         // console.log("❤️❤️❤️❤️❤️❤️❤️❤️ assigned to", user)
